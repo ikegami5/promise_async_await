@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>promise_async_await</title>
+    <style>
+        p.result, p.task, p.start {
+            display: inline-block;
+            width: 8rem;
+            line-height: 8rem;
+            text-align: center;
+            font-size: 0.8rem;
+            margin: 0 1rem 0 0;
+            border: 1px solid grey;
+            padding: 0;
+        }
+
+        p.error {
+            color: red;
+        }
+
+        p.start, p.task {
+            background-color: silver;
+            transition: all .3s;
+        }
+
+        p.start:hover, p.task:hover {
+            background-color: lightgrey;
+        }
+
+        p.result, p.task {
+            border: 1px solid lightgreen;
+        }
+    </style>
+</head>
+<body>
+    <h1>Promise Async Await Study</h1>
+    <div class="ex1">
+        <h2>example1: callback</h2>
+        <p class="start">start</p>
+    </div>
+    <div class="ex2">
+        <h2>example2: sequential callback</h2>
+        <p class="start">start</p>
+    </div>
+    <div class="ex3">
+        <h2>example3: promise</h2>
+        <p class="start">start</p>
+    </div>
+    <div class="ex4">
+        <h2>example4: sequential promise</h2>
+        <p class="start">start</p>
+    </div>
+    <div class="ex5">
+        <h2>example5: parallel promise</h2>
+        <p class="start">start</p>
+    </div>
+    <div class="ex6">
+        <h2>example6: sequential await</h2>
+        <p class="start">start</p>
+    </div>
+    <div class="ex7">
+        <h2>example7: parallel await</h2>
+        <p class="start">start</p>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="index.js"></script>
+</body>
+</html>
