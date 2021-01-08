@@ -24,15 +24,17 @@ const print_result = ($task_button, result, is_error) => {
     }
     $task_button.remove();
 };
+const print_result_on_success = ($task_button, result) => print_result($task_button, result, false);
+const print_result_on_error = ($task_button, result) => print_result($task_button, result, true);
 
 const $ex1 = $('div.ex1');
 $ex1.find('.start').on('click', function() {
     $(this).remove();
     const $task_button = $(task_button);
     async_task_callback($task_button, $ex1, 0, (result) => {
-        print_result($task_button, result, false);
+        print_result_on_success($task_button, result);
     }, (error) => {
-        print_result(error.$task_button, error.time, true);
+        print_result_on_error(error.$task_button, error.time);
     });
 });
 
@@ -41,21 +43,21 @@ $ex2.find('.start').on('click', function() {
     $(this).remove();
     const $task_button1 = $(task_button);
     async_task_callback($task_button1, $ex2, 0, (result1) => {
-        print_result($task_button1, result1, false);
+        print_result_on_success($task_button1, result1);
         const $task_button2 = $(task_button);
         async_task_callback($task_button2, $ex2, result1, (result2) => {
-            print_result($task_button2, result2, false);
+            print_result_on_success($task_button2, result2);
             const $task_button3 = $(task_button);
             async_task_callback($task_button3, $ex2, result2, (result3) => {
-                print_result($task_button3, result3, false);
+                print_result_on_success($task_button3, result3);
             }, (error3) => {
-                print_result(error3.$task_button, error3.time, true);
+                print_result_on_error(error3.$task_button, error3.time);
             });
         }, (error2) => {
-            print_result(error2.$task_button, error2.time, true);
+            print_result_on_error(error2.$task_button, error2.time);
         });
     }, (error1) => {
-        print_result(error1.$task_button, error1.time, true);
+        print_result_on_error(error1.$task_button, error1.time);
     });
 });
 
@@ -64,9 +66,9 @@ $ex3.find('.start').on('click', function() {
     $(this).remove();
     const $task_button = $(task_button);
     async_task_promise($task_button, $ex3, 0).then((result) => {
-        print_result($task_button, result, false);
+        print_result_on_success($task_button, result);
     }).catch((error) => {
-        print_result(error.$task_button, error.time, true);
+        print_result_on_error(error.$task_button, error.time);
     });
 });
 
@@ -77,15 +79,15 @@ $ex4.find('.start').on('click', function() {
     const $task_button2 = $(task_button);
     const $task_button3 = $(task_button);
     async_task_promise($task_button1, $ex4, 0).then((result) => {
-        print_result($task_button1, result, false);
+        print_result_on_success($task_button1, result);
         return async_task_promise($task_button2, $ex4, result);
     }).then((result) => {
-        print_result($task_button2, result, false);
+        print_result_on_success($task_button2, result);
         return async_task_promise($task_button3, $ex4, result);
     }).then((result) => {
-        print_result($task_button3, result, false);
+        print_result_on_success($task_button3, result);
     }).catch((error) => {
-        print_result(error.$task_button, error.time, true);
+        print_result_on_error(error.$task_button, error.time);
     });
 });
 
@@ -98,10 +100,10 @@ $ex5.find('.start').on('click', function() {
     const promises = $task_buttons.map(($b) => async_task_promise($b, $ex5, 0));
     Promise.all(promises).then((results) => {
         results.forEach((r, i) => {
-            print_result($task_buttons[i], r, false);
+            print_result_on_success($task_buttons[i], r);
         });
     }).catch((error) => {
-        print_result(error.$task_button, error.time, true);
+        print_result_on_error(error.$task_button, error.time);
     });
 });
 
@@ -113,10 +115,10 @@ $ex6.find('.start').on('click', async function() {
     const $task_button3 = $(task_button);
     // await/catch (recommended)
     const result1 = await async_task_promise($task_button1, $ex6, 0).catch((error) => {
-        print_result(error.$task_button, error.time, true); // resolved with undefined
+        print_result_on_error(error.$task_button, error.time); // resolved with undefined
     }); // result1 == time or undefined
     if (result1) {
-        print_result($task_button1, result1, false);
+        print_result_on_success($task_button1, result1);
     } else {
         return;
     }
@@ -125,18 +127,18 @@ $ex6.find('.start').on('click', async function() {
     try {
         result2 = await async_task_promise($task_button2, $ex6, result1);
     } catch (error) {
-        print_result(error.$task_button, error.time, true);
+        print_result_on_error(error.$task_button, error.time);
     }
     if (result2) {
-        print_result($task_button2, result2, false);
+        print_result_on_success($task_button2, result2);
     } else {
         return;
     }
     // then/catch (same as normal promise except to wait here)
     await async_task_promise($task_button3, $ex6, result2).then((result) => {
-        print_result($task_button3, result, false);
+        print_result_on_success($task_button3, result);
     }).catch((error) => {
-        print_result(error.$task_button, error.time, true);
+        print_result_on_error(error.$task_button, error.time);
     });
 });
 
@@ -148,11 +150,11 @@ $ex7.find('.start').on('click', async function() {
     }));
     const promises = $task_buttons.map(($b) => async_task_promise($b, $ex7, 0));
     const results = await Promise.all(promises).catch((error) => {
-        print_result(error.$task_button, error.time, true);
+        print_result_on_error(error.$task_button, error.time);
     });
     if (results) {
         results.forEach((r, i) => {
-            print_result($task_buttons[i], r, false);
+            print_result_on_success($task_buttons[i], r);
         });
     }
 });
